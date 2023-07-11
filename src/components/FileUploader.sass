@@ -1,0 +1,117 @@
+@import '../style.sass'
+
+.container
+  display: flex
+  flex-direction: column
+  align-items: center
+  padding: 24px
+  background-color: $tertiary-color
+  border-radius: 10px
+  box-shadow: 0px 5px 10px rgba(0,0,0,0.1)
+  width: 90% // set a fixed width
+  margin: 0 auto // center the container
+
+  @media (max-width: 768px)
+    width: 100%
+
+  .dropzone
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    border-width: 2px
+    border-radius: 5px
+    border-color: #ddd
+    border-style: dashed
+    background-color: #ffffff
+    color: #888
+    outline: none
+    transition: border .24s ease-in-out
+    margin: 8px
+    width: 100%
+
+  .thumbsContainer
+    display: flex
+    flex-direction: row
+    flex-wrap: wrap
+    justify-content: flex-start
+    align-items: center
+    padding: 8px
+    width: 100%
+    padding: 1rem
+
+    .thumbsList
+      display: flex
+      flex-wrap: wrap
+      list-style: none
+      width: 100%
+      padding: 0
+      gap: 8px
+
+
+    .thumb
+      flex: 1 0 21% // use flex-basis instead of width and leave some space for margins
+      display: flex
+      flex-direction: row
+      gap: 8px
+      justify-content: space-between // distribute space evenly
+      align-items: center
+      border-radius: 5px
+      border: 1px solid $secondary-color
+      background-color: $secondary-color
+      margin-bottom: 8px
+      padding: 8px
+      box-sizing: border-box
+      height: 3rem // use min-height instead of height
+
+      .img
+        display: block
+        width: auto
+        height: 100%
+        max-height: 80px
+        max-width: 80px
+        object-fit: contain
+
+      .fileName
+        flex-grow: 1
+        margin: 8px
+
+      .removeButton
+        display: flex
+        justify-content: center
+        align-items: center
+        color: #ff1744
+        background-color: transparent
+        border: 1px solid #ff1744
+        width: 24px
+        height: 24px
+        border-radius: 50%
+        padding: 0
+        cursor: pointer
+        font-size: 16px
+        line-height: 1
+        transition: background-color 0.3s, color 0.3s
+
+        &:hover
+          color: #fff
+          background-color: #ff1744
+    
+  .submitButton
+    display: inline-block
+    font-weight: 400
+    color: #212529
+    text-align: center
+    vertical-align: middle
+    cursor: pointer
+    background-color: #ffc107
+    border: 1px solid transparent
+    padding: .375rem .75rem
+    font-size: 1rem
+    line-height: 1.5
+    border-radius: .25rem
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out
+
+    &:hover
+      color: #212529
+      background-color: #ffe084
+      border-color: #ffe084
