@@ -6,7 +6,8 @@ export const fileUploaderSlice = createSlice({
   initialState: {
     files: [],
     uploadStatus: 'idle',
-    error: null
+    error: null,
+    generatedText: '',
   },
   reducers: {
     addFiles: (state, action) => {
@@ -23,6 +24,7 @@ export const fileUploaderSlice = createSlice({
       })
       .addCase(uploadFilesAsync.fulfilled, (state, action) => {
         state.uploadStatus = 'succeeded';
+        state.generatedText = action.payload;
         // You can handle the response here if needed
       })
       .addCase(uploadFilesAsync.rejected, (state, action) => {
@@ -36,22 +38,28 @@ export const uploadFilesAsync = createAsyncThunk(
   'fileUploader/uploadFilesAsync',
   async (files, { rejectWithValue }) => {
     try {
-      const uploadPromises = files.map(async (fileObject) => {
-        const formData = new FormData();
-        formData.append('file', fileObject.file); // Use the original File object
+      const batchId = new Date().getTime(); // Generate a timestamp
 
-        const response = await axios.post('http://localhost:8000/api/media_objects', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
+      const formData = new FormData();
+      files.forEach((fileObject, index) => {
+        formData.append(`file${index}`, fileObject.file); // Use the original File object
+      });
+      formData.append('batchId', batchId); // Include the batchId
 
-        return response.data;
+      const response = await axios.post('http://localhost:8000/api/media_objects', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
 
-      const responses = await Promise.all(uploadPromises);
-      return responses;
+      // Extract the generated text from the responses
+      const generatedText = response.data.generatedText;
+
+      return generatedText;
     } catch (error) {
+      if (error.message.includes("Idle timeout reached")) {
+        return rejectWithValue("The request timed out. Please check your internet connection or try again later.");
+      }
       return rejectWithValue(error.response.data);
     }
   }

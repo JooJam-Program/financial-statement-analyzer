@@ -8,6 +8,7 @@ import './FileUploader.sass';
 const FileUploader = () => {
   const files = useSelector((state) => state.fileUploader.files);
   const dispatch = useDispatch();
+  const generatedText = useSelector((state) => state.fileUploader.generatedText);
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/*, application/pdf', // Accept PDF files
@@ -43,6 +44,14 @@ const FileUploader = () => {
     ))
   ];
 
+  const GeneratedText = ({ text }) => {
+    return (
+      <div className="generatedTextContainer">
+        <p>{text}</p>
+      </div>
+    );
+  }
+
   // Effect to revoke object URL
   useEffect(() => () => {
     // Make sure to revoke the data uris to avoid memory leaks
@@ -63,6 +72,7 @@ const FileUploader = () => {
       {thumbs.length > 1 && (
         <button className="submitButton" onClick={() => dispatch(uploadFilesAsync(files))}>Submit</button>
       )}
+      {generatedText? <GeneratedText text={generatedText} /> : null}
     </section>
   );
 }
