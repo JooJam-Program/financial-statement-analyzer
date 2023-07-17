@@ -49,7 +49,8 @@ export const uploadFilesAsync = createAsyncThunk(
       const response = await axios.post('http://localhost:8000/api/media_objects', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }
+        },
+        timeout: 600000 // 10 minutes
       });
 
       // Extract the generated text from the responses

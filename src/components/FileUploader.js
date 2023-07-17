@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useSelector, useDispatch } from 'react-redux';
 import { addFiles, removeFile, uploadFilesAsync } from '../redux/fileUploaderSlice';
-import pdfLogo from '../assets/pfd_logo.png'; 
+import pdfLogo from '../assets/pfd_logo.png';
 import './FileUploader.sass';
 
 const FileUploader = () => {
@@ -20,7 +20,7 @@ const FileUploader = () => {
       }))));
     }
   });
-  
+
 
   const truncateFileName = (name) => {
     if (name.length > 40) {
@@ -45,9 +45,20 @@ const FileUploader = () => {
   ];
 
   const GeneratedText = ({ text }) => {
+    // Extract the text before and after the code
+    const [beforeCode, code, afterCode] = text.split(/```html([\s\S]*?)```/);
+
+    // Create a new blob object
+    const blob = new Blob([code], { type: 'text/html' });
+
+    // Create a URL for the blob object
+    const url = URL.createObjectURL(blob);
+
     return (
       <div className="generatedTextContainer">
-        <p>{text}</p>
+        <p>{beforeCode}</p>
+        <iframe src={url} title="Chart" />
+        <p>{afterCode}</p>
       </div>
     );
   }
@@ -60,7 +71,7 @@ const FileUploader = () => {
 
   return (
     <section className="container">
-      <div {...getRootProps({className: "dropzone"})}>
+      <div {...getRootProps({ className: "dropzone" })}>
         <input {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>
       </div>
@@ -72,7 +83,7 @@ const FileUploader = () => {
       {thumbs.length > 1 && (
         <button className="submitButton" onClick={() => dispatch(uploadFilesAsync(files))}>Submit</button>
       )}
-      {generatedText? <GeneratedText text={generatedText} /> : null}
+      {generatedText ? <GeneratedText text={generatedText} /> : null}
     </section>
   );
 }

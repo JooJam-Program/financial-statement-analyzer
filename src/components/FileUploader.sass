@@ -117,10 +117,14 @@
       border-color: #ffe084
 
   .generatedTextContainer
-  margin-top: 20px
-  padding: 20px
-  background-color: #fff
-  border-radius: 5px
-  box-shadow: 0px 5px 10px rgba(0,0,0,0.1)
-  width: 100%
-  word-wrap: break-word
+    position: relative
+    overflow: hidden
+    padding-top: 56.25% // for 16:9 aspect ratio, adjust as needed
+
+    iframe
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      border: 0
